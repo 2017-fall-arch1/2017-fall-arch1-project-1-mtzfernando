@@ -3,6 +3,11 @@
 #include "bst.h"
 
 int main(){
-  node* root = NULL;
+  bst* root = newBst();
+  insertNode(root, "Fernando");
+  insertNode(root, "Eric");
+  insertNode(root, "David");
+  printBst(root);
+
   return 0;
 }

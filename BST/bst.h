@@ -1,7 +1,19 @@
 #ifndef bst_h
 #define bst_h
 
-struct node;
+typedef struct node_s{
+  struct node_s* lNode;
+  struct node_s* rNode;
+  char* name;
+} node;
+
+typedef struct bst{
+  node* root;
+} bst;
+
+bst* newBst();
 node* newNode(char* name);
-node* insertNode(node* node, char* name);
+void insertNode(bst* bst, char* name);
+void printBst(bst* bst);
+
 #endif
