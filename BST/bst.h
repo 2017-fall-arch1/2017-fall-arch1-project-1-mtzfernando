@@ -7,13 +7,9 @@ typedef struct node_s{
   char* name;
 } node;
 
-typedef struct bst{
-  node* root;
-} bst;
-
-bst* newBst();
 node* newNode(char* name);
-void insertNode(bst* bst, char* name);
-void printBst(bst* bst);
+node* insertNode(node* node, char* name);
+node* deleteNode(node* node, char* name);
+void printBst(node* node);
 
 #endif

@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include "bst.h"
-
-bst* newBst(){
-  bst* nBst = (bst*)malloc(sizeof(bst));
-  nBst->root = 0;
-  return nBst;
-}
-
+/*
+  Author: Fernando Martinez
+  Refernces:
+    www.geeksforgeeks.org
+    Dr. Freudenthal's code on github.com
+*/
 node* newNode(char* name){
   node* newNode = (node*) malloc(sizeof(node));
   newNode->name = name;
@@ -17,42 +16,59 @@ node* newNode(char* name){
   return newNode;
 }
 
-void insertNode(bst* bst, char* name){
-  node* node = newNode(name), *tmp;
-  tmp = bst->root;
-  int cmp;
+node* insertNode(node* node, char* name){
 
-  printf("**%s** **%s\n", tmp, bst->root);
-  
-  printf("Before if(bst->root = NULL) %s - %s\n", bst->root, name);
-  if(bst->root == NULL){
-    bst->root = node;
-    printf("Inside if(bst->root = NULL) %s - %s\n", bst, name); 
+  if(node == NULL){
+    node = newNode(name);
+  }
+  else if(strcmp(name, node->name) <= 0){
+    node->lNode = insertNode(node->lNode, name);
   }
   else{
-    cmp = strcmp(name, node->name);
-    printf("Inside else %d\n", cmp);
-    if(cmp == 0){
-      printf("cmp = 0\n");
-      while(tmp->lNode != NULL){
-	tmp = tmp->lNode;
-      }
-      tmp->lNode = node;
-    }
-    else if(cmp > 0){
-      printf("cmp > 0\n");
-    }
-    else if(cmp < 0){
-      printf("cmp < 0\n");
-    }
+    node->rNode = insertNode(node->rNode, name);
   }
+  return node;
 }
 
-void printBst(bst* bst){
-  node* node;
-  printf("Inside printBst before for loop %s\n", bst->root);
-  for(node = bst->root; node; node = node->lNode){
-    printf("<%s>\n", node->name);
+node* deleteNode(node* node, char* name){
+  struct node_s* tmp;
+  
+  if(node == NULL){
+    return node;
   }
-  printf("Inside printBst after for loop\n");
+  if(strcmp(name, node->name) < 0){
+    node->lNode = deleteNode(node->lNode, name);
+  }
+  else if(strcmp(name, node->name) > 0){
+    node->rNode = deleteNode(node->rNode, name);
+  }
+  else{
+    if(node->lNode == NULL){
+      tmp = node->rNode;
+      free(node);
+      return tmp;
+    }
+    if(node->rNode == NULL){
+      tmp = node->lNode;
+      free(node);
+      return tmp;
+    }
+    
+    tmp = node->rNode;
+    
+    while(tmp->lNode != NULL){
+      tmp = tmp->lNode;
+    }
+    node->name = tmp->name;
+    node->rNode = deleteNode(node->rNode, tmp->name);
+  }
+  return node;
+}
+
+void printBst(node* node){
+  if(node != NULL){
+    printBst(node->lNode);
+    printf("<%s>\n", node->name);
+    printBst(node->rNode);
+  }
 }
