@@ -13,5 +13,5 @@ To compile:
 To run:
    ./main
 
-To binaries:
+To delete binaries:
    make clean

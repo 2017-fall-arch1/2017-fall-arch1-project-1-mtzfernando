@@ -1,6 +1,9 @@
 #ifndef bst_h
 #define bst_h
-
+/*
+  Author: Fernando Martinez
+  Header file for the program
+*/
 typedef struct node_s{
   struct node_s* lNode;
   struct node_s* rNode;
