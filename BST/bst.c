@@ -8,28 +8,55 @@
     www.geeksforgeeks.org
     Dr. Freudenthal's code on github.com
 */
+/*Creates a BST.*/
+Bst* newBst(){
+  Bst* nBst = (Bst*)malloc(sizeof(Bst));
+  nBst->root = NULL;
+  return nBst;
+}
+
 /*Create a new Node for the bst*/
 node* newNode(char* name){
-  node* newNode = (node*) malloc(sizeof(node));
-  newNode->name = name;
-  newNode->lNode = NULL;
-  newNode->rNode = NULL;
+  node* newNode;
+  newNode = (node*) malloc(sizeof(node));
+  if(newNode != NULL){
+    newNode->name = name;
+    newNode->lNode = NULL;
+    newNode->rNode = NULL;
+  }
   return newNode;
 }
 
-/*Insert a new node into the bst*/
-node* insertNode(node* node, char* name){
-  /*If the node is empty create the node*/
-  if(node == NULL){
-    node = newNode(name);
-  }
-  else if(strcmp(name, node->name) <= 0){                  /*Compare the current node name to the node being created.*/
-    node->lNode = insertNode(node->lNode, name);
+/*Helper method to add the node in the correct place.*/
+static void addNode(node* newNode, node* root){
+  printf("root = %p node = %p\n", root, newNode);
+  /*Compare the current node name to the node being created.*/
+  if(strcmp(newNode->name, root->name) <= 0){                  
+    if(root->lNode == NULL)
+      root->lNode = newNode;
+    else
+      addNode(newNode, root->lNode);
   }
   else{
-    node->rNode = insertNode(node->rNode, name);
+    if(root->rNode == NULL)
+      root->rNode = newNode;
+    else
+      addNode(newNode, root->rNode);
   }
-  return node;
+}
+
+/*Insert a new node into the bst*/
+void insertNode(Bst* bst, char* name){
+  node* node;
+  node = newNode(name);
+  printf("bst = %p node = %p\n", bst, node->lNode);
+  if(bst->root == NULL){
+    bst->root = node;
+    printf("if bst->root = %p\n", bst->root);
+  } else{
+    printf("bst->root* = %s\n", bst->root->name);
+    addNode(node, bst->root);
+  }
 }
 
 /*Delete a node from the bst*/
@@ -74,5 +101,6 @@ void printBst(node* node){
     printBst(node->lNode);
     printf("<%s>\n", node->name);
     printBst(node->rNode);
+    /* printf("root = %s\n", node->name);*/
   }
 }
