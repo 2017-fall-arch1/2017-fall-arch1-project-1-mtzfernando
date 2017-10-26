@@ -8,12 +8,28 @@
 */
 int main(){
   Bst* bst;
+  node* node;
   int key;
   char name[25];
   FILE* fp;
 
   key = 0;
   bst = newBst();
+
+  
+  insertNode(bst, "F");
+  insertNode(bst, "H");
+  insertNode(bst, "D");
+  insertNode(bst, "Z");
+  insertNode(bst, "A");
+  insertNode(bst, "Y");
+  insertNode(bst, "B");
+  printf("The BST:\n");
+  printBst(bst->root);
+  deleteNode(bst->root, "A");
+  printf("The BST after:\n");
+  printBst(bst->root);
+  
   while(key != -1){
     printf("Enter a 1 to add a name.\n");
     printf("Enter a 2 to delete a name.\n");
@@ -22,20 +38,24 @@ int main(){
     scanf("%d", &key);
     switch(key){
     case 1:
-      printf("Enter name of employee:");
+      printf("Enter name of employee: ");
       scanf("%s", name);      
-      insertNode(bst, name);
-      printf("** %p **\n", bst);
+      insertNode(bst, strdup(name));
       break;
     case 2:
+      printf("Enter the name to be deleted: ");
+      scanf("%s", name);
+      node = deleteNode(bst->root, strdup(name));
+      printf("The name %s was deleted from the BST.\n");
       break;
     case 3:
       printBst(bst->root);
       break;
     case -1:
+      printf("The program is closing!\n");
       break;
     default:
-      puts("Invalid choice");
+      puts("Invalid choice\n");
     }
   }
   /* fp = fopen("test.txt", "r");
@@ -51,17 +71,7 @@ int main(){
     root = insertNode(root, name);
     printBst(root);
   }
-  while(strcmp("0", name) != 0);
-
-  insertNode(bst, "Fer");
-  insertNode(bst, "Eric");
-  printBst(bst->root);
-  insertNode(bst, "Gerardo");
-  printf("The BST:\n");
-  printBst(bst->root);
-  root = deleteNode(bst->root, "Fer");
-  printf("BST after deleting Fer:\n");
-  printBst(bst->root);
-  printf("New root %s\n", bst->root->name);*/
+  while(strcmp("0", name) != 0);*/
+  
   return 0;
 }

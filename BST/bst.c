@@ -29,15 +29,13 @@ node* newNode(char* name){
 
 /*Helper method to add the node in the correct place.*/
 static void addNode(node* newNode, node* root){
-  printf("root = %p node = %p\n", root, newNode);
   /*Compare the current node name to the node being created.*/
   if(strcmp(newNode->name, root->name) <= 0){                  
     if(root->lNode == NULL)
       root->lNode = newNode;
     else
       addNode(newNode, root->lNode);
-  }
-  else{
+  } else{
     if(root->rNode == NULL)
       root->rNode = newNode;
     else
@@ -49,12 +47,9 @@ static void addNode(node* newNode, node* root){
 void insertNode(Bst* bst, char* name){
   node* node;
   node = newNode(name);
-  printf("bst = %p node = %p\n", bst, node->lNode);
   if(bst->root == NULL){
     bst->root = node;
-    printf("if bst->root = %p\n", bst->root);
   } else{
-    printf("bst->root* = %s\n", bst->root->name);
     addNode(node, bst->root);
   }
 }
@@ -68,17 +63,14 @@ node* deleteNode(node* node, char* name){
   }
   if(strcmp(name, node->name) < 0){                      /*Traverse the bst to the left*/
     node->lNode = deleteNode(node->lNode, name);
-  }
-  else if(strcmp(name, node->name) > 0){                 /*Traverse the bst to the right*/
+  } else if(strcmp(name, node->name) > 0){                 /*Traverse the bst to the right*/
     node->rNode = deleteNode(node->rNode, name);
-  }
-  else{                                                  /*The node matched to the one to be deleted*/
+  } else{                                                  /*The node matched to the one to be deleted*/
     if(node->lNode == NULL){                             /*If the node has one child on the right*/
       tmp = node->rNode;
       free(node);
       return tmp;
-    }
-    if(node->rNode == NULL){                             /*If the node has one child on the right*/
+    } else if(node->rNode == NULL){                             /*If the node has one child on the right*/
       tmp = node->lNode;
       free(node);
       return tmp;
@@ -101,6 +93,5 @@ void printBst(node* node){
     printBst(node->lNode);
     printf("<%s>\n", node->name);
     printBst(node->rNode);
-    /* printf("root = %s\n", node->name);*/
   }
 }
