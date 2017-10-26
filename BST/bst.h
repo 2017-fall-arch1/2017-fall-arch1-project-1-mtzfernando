@@ -17,9 +17,9 @@ typedef struct bst{
 
 Bst* newBst();
 node* newNode(char* name);
-/*node* insertNode(node* node, char* name);*/
 void insertNode(Bst* bst, char* name);
 node* deleteNode(node* node, char* name);
 void printBst(node* node);
+int searchNode(node* node, char* name);
 
 #endif

@@ -75,7 +75,7 @@ node* deleteNode(node* node, char* name){
       free(node);
       return tmp;
     }
-    /*The node has two child*/
+    /*If the node has two child*/
     tmp = node->rNode;
     /*Find the smaller child on the right side*/
     while(tmp->lNode != NULL){
@@ -94,4 +94,19 @@ void printBst(node* node){
     printf("<%s>\n", node->name);
     printBst(node->rNode);
   }
+}
+
+int searchNode(node* node, char* name){
+  int flag = 0;
+
+  if(node == NULL)
+    return 0;
+  if(strcmp(name, node->name) == 0)
+    return 1;
+  else if(strcmp(name, node->name) < 0)
+    flag = searchNode(node->lNode, name);
+  else
+    flag = searchNode(node->rNode, name);
+
+  return flag;
 }

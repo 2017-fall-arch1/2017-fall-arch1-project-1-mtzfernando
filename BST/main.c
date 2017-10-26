@@ -8,17 +8,14 @@
 */
 int main(){
   Bst* bst;
-  node* node;
-  int key;
+  int key, flag;
   char name[25];
   FILE* fp;
 
   key = 0;
   bst = newBst();
-
-  
-  insertNode(bst, "F");
-  insertNode(bst, "H");
+  insertNode(bst, "Fernando");
+  insertNode(bst, "Hector");
   insertNode(bst, "D");
   insertNode(bst, "Z");
   insertNode(bst, "A");
@@ -26,14 +23,20 @@ int main(){
   insertNode(bst, "B");
   printf("The BST:\n");
   printBst(bst->root);
+  flag = searchNode(bst->root, "A");
+  flag = searchNode(bst->root, "P");
   deleteNode(bst->root, "A");
+  printf("The BST after:\n");
+  printBst(bst->root);
+  deleteNode(bst->root, "P");
   printf("The BST after:\n");
   printBst(bst->root);
   
   while(key != -1){
-    printf("Enter a 1 to add a name.\n");
-    printf("Enter a 2 to delete a name.\n");
-    printf("Enter a 3 to print the list of employees.\n");
+    printf("Enter 1 to add a name: \n");
+    printf("Enter 2 to delete a name: \n");
+    printf("Enter 3 to print the list of employees:\n");
+    printf("Enter 4 to search for an employee: \n");
     printf("Enter a -1 to end the program\n");
     scanf("%d", &key);
     switch(key){
@@ -45,14 +48,28 @@ int main(){
     case 2:
       printf("Enter the name to be deleted: ");
       scanf("%s", name);
-      node = deleteNode(bst->root, strdup(name));
-      printf("The name %s was deleted from the BST.\n");
+      flag = searchNode(bst->root, name);
+      if(flag == 1){
+	deleteNode(bst->root, strdup(name));
+	printf("The name %s was deleted from the list.\n", name);
+      } else
+	printf("Can not delete %s from the list due to not being in the list\n", name);
       break;
     case 3:
+      printf("The list of employees:\n");
       printBst(bst->root);
       break;
+    case 4:
+      printf("Enter the name to search for: ");
+      scanf("%s", name);
+      flag = searchNode(bst->root, name);
+      if(flag == 1)
+	printf("The employee %s is in the list.\n", name);
+      else
+	printf("The employe %s is NOT in the list.\n", name);
+      break;
     case -1:
-      printf("The program is closing!\n");
+      printf("Exiting program\n");
       break;
     default:
       puts("Invalid choice\n");
