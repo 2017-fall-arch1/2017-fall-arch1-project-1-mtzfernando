@@ -7,6 +7,8 @@
   Refernces:
     www.geeksforgeeks.org
     Dr. Freudenthal's code on github.com
+    www.techcrashcourse.com
+    C Primer Plus
 */
 /*Creates a BST.*/
 Bst* newBst(){
@@ -70,7 +72,7 @@ node* deleteNode(node* node, char* name){
       tmp = node->rNode;
       free(node);
       return tmp;
-    } else if(node->rNode == NULL){                             /*If the node has one child on the right*/
+    } else if(node->rNode == NULL){                             /*If the node has one child on the left*/
       tmp = node->lNode;
       free(node);
       return tmp;
@@ -91,13 +93,14 @@ node* deleteNode(node* node, char* name){
 void printBst(node* node){
   if(node != NULL){
     printBst(node->lNode);
-    printf("<%s>\n", node->name);
+    printf("%s\n", node->name);
     printBst(node->rNode);
   }
 }
 
+/*Function to search for an employee. Searches inorder and recursively.*/
 int searchNode(node* node, char* name){
-  int flag = 0;
+  int flag = 0;                  /*Int used as a boolean to check if the employee is in the list*/
 
   if(node == NULL)
     return 0;
@@ -109,4 +112,116 @@ int searchNode(node* node, char* name){
     flag = searchNode(node->rNode, name);
 
   return flag;
+}
+
+/*Function for running the whole program. Contains a loop for the input of the user. Also, contains the interface of the program.*/
+void run(){
+  Bst* bst;
+  int key, flag;
+  char name[25];
+  FILE* fp;
+
+  key = 0;
+  bst = newBst();
+  insertNode(bst, "FERNANDO");
+  insertNode(bst, "HECTOR");
+  insertNode(bst, "DAVID");
+  insertNode(bst, "XAVIOR");
+  insertNode(bst, "ALBERT");
+  insertNode(bst, "YURI");
+  insertNode(bst, "BRENDA");
+  printf("The BST:\n");
+  printBst(bst->root);
+  
+  while(key != -1){
+    printf("Enter 1 to add a name: \n");
+    printf("Enter 2 to delete a name: \n");
+    printf("Enter 3 to print the list of employees:\n");
+    printf("Enter 4 to search for an employee: \n");
+    printf("Enter 5 to read from a file:\n");
+    printf("Enter 6 to write to a file and add it to the list\n");
+    printf("Enter a -1 to end the program\n");
+    scanf("%d", &key);
+    switch(key){
+    case 1:
+      printf("Enter name of employee: ");
+      scanf("%s", name);
+      convert(name);
+      insertNode(bst, strdup(name));
+      break;
+    case 2:
+      printf("Enter the name to be deleted: ");
+      scanf("%s", name);
+      convert(name);
+      flag = searchNode(bst->root, name);
+      if(flag == 1){
+	deleteNode(bst->root, strdup(name));
+	printf("The name %s was deleted from the list.\n", name);
+      } else
+	printf("Can not delete %s from the list due to not being in the list\n", name);
+      break;
+    case 3:
+      printf("The list of employees:\n");
+      printBst(bst->root);
+      break;
+    case 4:
+      printf("Enter the name to search for: ");
+      scanf("%s", name);
+      convert(name);
+      flag = searchNode(bst->root, name);
+      if(flag == 1)
+	printf("The employee %s is in the list.\n", name);
+      else
+	printf("The employe %s is NOT in the list.\n", name);
+      break;
+    case 5:
+      fp = fopen("test.txt", "r");
+      while(!feof(fp)){
+	fscanf(fp, "%s", name);
+	convert(name);
+	insertNode(bst, strdup(name));
+      }
+      fclose(fp);
+      break;
+    case 6:
+      fp = fopen("test.txt", "a");
+      printf("Enter the name to write to the file: ");
+      scanf("%s", name);
+      convert(name);
+      fprintf(fp, "%s\n", name);
+      fclose(fp);
+      insertNode(bst, strdup(name));
+      break;
+    case -1:
+      printf("Exiting program\n");
+      break;
+    default:
+      puts("Invalid choice\n");
+    }
+  }
+}
+
+/*Function to check if the iput char is a lowercase.*/
+int isLowerCase(char c){
+  if(c >= 'a' && c <= 'z')
+    return 1;
+  else
+    return 0;
+}
+
+/*Function converts lowercases to uppercases.*/
+int toUpperCase(char c){
+  return c - 32;
+}
+
+/*Function takes care of the conversion of lowercase to uppercase.*/
+void convert(char* name){
+  int i;
+  for(i = 0; name[i] != '\0'; i++){
+    if(isLowerCase(name[i]))
+      name[i] = toUpperCase(name[i]);
+    else
+      name[i] = name[i];
+  }
+  name[i] = '\0';
 }

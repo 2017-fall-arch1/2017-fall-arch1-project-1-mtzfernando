@@ -15,11 +15,15 @@ typedef struct bst{
   node* root;
 } Bst;
 
-Bst* newBst();
-node* newNode(char* name);
-void insertNode(Bst* bst, char* name);
-node* deleteNode(node* node, char* name);
-void printBst(node* node);
-int searchNode(node* node, char* name);
+Bst* newBst();                              /*Creates a new Binary Search Tree.*/
+node* newNode(char* name);                 /*Creates a new node.*/
+void insertNode(Bst* bst, char* name);     /*Inserts a new node into the BST.*/
+node* deleteNode(node* node, char* name);  /*Deletes a node from the BST.*/
+void printBst(node* node);                 /*Prints the BST inorder.*/
+int searchNode(node* node, char* name);    /*Search for a node.*/
+void run();                                /*Runs the whole program.*/
+int isLowerCase(char c);                   /*Checks if a char is a lowercase.*/
+int toUpperCase(char c);                   /*Converts lowercase chars into uppercase.*/
+void convert(char* name);                   /*Starts the convertion of lowercase to uppercase.*/
 
 #endif
